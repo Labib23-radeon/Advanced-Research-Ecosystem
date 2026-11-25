@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Advanced Research Studio
 
 An everyday, reliable autonomous research workstation that works **100% locally offline**, **across your local Wi-Fi network**, or with **any OpenAI-compatible AI API** (Groq, Gemini, OpenRouter, LM Studio, or local Ollama) — with an automatic **Built-in Fact Engine** fallback so it never stops working even with zero external LLMs.

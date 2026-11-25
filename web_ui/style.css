@@ -3177,7 +3177,7 @@ body {
 
 .settings-health-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.65rem;
 }
 
@@ -3331,21 +3331,56 @@ body {
   }
 }
 
+.markdown-document table,
+.msg-text-content table {
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
 @media (max-width: 640px) {
+
+  html,
+  body,
+  .app-shell,
+  .workspace-body,
+  .main-content {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
   .top-bar {
-    padding: 0 0.75rem;
-    gap: 0.45rem;
+    padding: 0 0.65rem;
+    gap: 0.4rem;
+  }
+
+  .brand-name {
+    font-size: 0.88rem;
   }
 
   .brand-badge {
     display: none;
   }
 
-  .model-select-wrapper {
-    max-width: 135px;
+  .top-bar-right {
+    gap: 0.35rem;
+    min-width: 0;
   }
 
-  .status-text {
+  .model-select-wrapper {
+    max-width: 112px;
+    padding: 0.25rem 0.45rem;
+  }
+
+  #model-select {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.72rem;
+  }
+
+  .status-text,
+  #btn-audio-toggle,
+  #btn-shortcuts-toggle {
     display: none;
   }
 

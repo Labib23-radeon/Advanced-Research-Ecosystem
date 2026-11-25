@@ -1,0 +1,11 @@
+{
+  "provider_mode": "auto",
+  "ollama_host": "http://127.0.0.1:11434",
+  "ollama_model": "qwen2.5:7b",
+  "openai_preset": "groq",
+  "openai_base_url": "https://api.groq.com/openai/v1",
+  "openai_model": "llama-3.3-70b-versatile",
+  "openai_api_key": "",
+  "default_depth": "deep",
+  "default_style": "brief"
+}

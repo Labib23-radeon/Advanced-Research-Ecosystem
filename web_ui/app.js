@@ -324,9 +324,14 @@ function initSidebarState() {
   const shell = document.querySelector(".app-shell");
   if (!shell) return;
   const saved = localStorage.getItem("stellar_sidebar_collapsed");
-  if (saved === "true" || (saved === null && window.innerWidth < 860)) {
+  if (saved === "true" || window.innerWidth < 860) {
     shell.classList.add("sidebar-collapsed");
   }
+  window.addEventListener("resize", () => {
+    if (window.innerWidth < 860) {
+      shell.classList.add("sidebar-collapsed");
+    }
+  });
 }
 
 function startNewResearchSession() {

@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced • AI Research & Intelligence Studio</title>
+  <meta name="description"
+    content="Reliable Local-First & Hybrid AI Research Workstation. Multi-engine web search, universal document indexing, grounded synthesis, and direct Q&A.">
+  <link rel="icon" type="image/png" href="/static/assets/advanced_logo.png">
+
+  <!-- Everyday Workstation Typography with graceful system fallbacks when offline -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- CDN UI libraries (paired with zero-dependency offline JS fallbacks inside app.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <link rel="stylesheet" href="/static/style.css?v=6.0">
+</head>
+
+<body>
+
+  <div class="ambient-backdrop" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- Compact Top Utility Header (56px) -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <button type="button" id="btn-sidebar-toggle" class="icon-btn" onclick="toggleSidebar()"
+          title="Toggle Navigation Sidebar" aria-label="Toggle Navigation Sidebar">
+          <i data-feather="sidebar"></i>
+        </button>
+
+        <div class="brand-container" onclick="switchView('studio')">
+          <div class="brand-mark">
+            <img src="/static/assets/advanced_logo.png" alt="advanced" class="brand-logo-img"
+              onerror="this.style.display='none'">
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">advanced</span>
+            <span class="brand-badge">Research Studio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-bar-right">
+        <button type="button" class="status-indicator status-clickable" id="system-status-badge"
+          onclick="openSettingsModal()" title="Click to configure AI Engine, API keys &amp; System Health">
+          <span class="status-dot online"></span>
+          <span class="status-text" id="system-status-text">Engine Ready</span>
+        </button>
+
+        <div class="model-select-wrapper" title="Select Local Ollama LLM">
+          <i data-feather="cpu" class="model-icon"></i>
+          <select id="model-select" onchange="onModelChange(this.value)" aria-label="Select AI Model">
+            <option value="llama3.2:3b">llama3.2:3b (Default)</option>
+            <option value="qwen2.5:7b">qwen2.5:7b</option>
+            <option value="mistral:7b">mistral:7b</option>
+            <option value="llama3.1:8b">llama3.1:8b</option>
+            <option value="deepseek-r1:7b">deepseek-r1:7b</option>
+            <option value="phi3:mini">phi3:mini</option>
+          </select>
+        </div>
+
+        <div class="top-icon-actions">
+          <button type="button" id="btn-settings-toggle" class="icon-btn" onclick="openSettingsModal()"
+            title="AI Engine, Health &amp; Multi-Device Settings" aria-label="Open Settings">
+            <i data-feather="settings"></i>
+          </button>
+          <button type="button" id="btn-audio-toggle" class="icon-btn" onclick="toggleAudio()"
+            title="Toggle Subtle Sound FX" aria-label="Toggle Sound FX">
+            <i data-feather="volume-x" id="audio-icon"></i>
+          </button>
+          <button type="button" id="btn-shortcuts-toggle" class="icon-btn" onclick="toggleShortcutsModal()"
+            title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">
+            <i data-feather="help-circle"></i>
+          </button>
+          <button type="button" id="btn-theme-toggle" class="icon-btn" onclick="toggleTheme()"
+            title="Switch Light / Dark Mode" aria-label="Switch Theme">
+            <i data-feather="sun" id="theme-icon"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Workspace Body -->
+    <div class="workspace-body">
+      <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+
+      <!-- Left Navigation & History Sidebar -->
+      <aside id="workspace-sidebar" class="workspace-sidebar">
+        <div class="sidebar-top">
+          <button type="button" id="btn-new-research" class="btn-new-research" onclick="startNewResearchSession()">
+            <i data-feather="plus"></i>
+            <span>New Research</span>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Primary Workspace Navigation">
+          <button type="button" id="nav-studio-btn" class="nav-tab active" onclick="switchView('studio')">
+            <i data-feather="compass"></i>
+            <span class="nav-tab-label">Research Studio</span>
+          </button>
+          <button type="button" id="nav-reports-btn" class="nav-tab" onclick="switchView('reports')">
+            <i data-feather="folder"></i>
+            <span class="nav-tab-label">Repository</span>
+            <span class="nav-count-badge" id="hud-reports-count">0</span>
+          </button>
+          <button type="button" id="nav-memory-btn" class="nav-tab" onclick="switchView('memory')">
+            <i data-feather="database"></i>
+            <span class="nav-tab-label">Vector Memory</span>
+            <span class="nav-count-badge" id="hud-memory-count">0</span>
+          </button>
+          <button type="button" id="nav-tools-btn" class="nav-tab" onclick="switchView('tools')">
+            <i data-feather="sliders"></i>
+            <span class="nav-tab-label">Sandbox Tools</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-history-section">
+          <div class="sidebar-section-header">
+            <span>RECENT DOSSIERS</span>
+            <button type="button" class="btn-text-xs" onclick="switchView('reports')"
+              title="View Full Catalog">All</button>
+          </div>
+          <div id="sidebar-recent-dossiers" class="sidebar-recent-list">
+            <div class="sidebar-empty-hint">Loading recent dossiers...</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Workspace Stage -->
+      <main class="main-content">
+
+        <!-- ==================================================== -->
+        <!-- VIEW 1: RESEARCH STUDIO                              -->
+        <!-- ==================================================== -->
+        <section id="view-studio" class="view-panel active">
+
+          <!-- Active Background Job Banner -->
+          <div id="active-job-banner" class="active-job-banner surface-card" style="display: none;">
+            <div class="active-job-info">
+              <div class="spinner-ring"></div>
+              <div>
+                <strong>Background Research Running:</strong>
+                <span id="active-job-topic"></span>
+                <span class="dim-text" id="active-job-steps"></span>
+              </div>
+            </div>
+            <button type="button" class="btn-danger-sm" onclick="abortResearch()">Stop Job</button>
+          </div>
+
+          <!-- Focused Research Composer Container -->
+          <div class="composer-card surface-card">
+            <div class="composer-header-row">
+              <div class="composer-heading">
+                <h1>Autonomous Research Workspace</h1>
+                <p>Search multiple knowledge engines or drop your own PDF, Word, Markdown, or CSV files for grounded
+                  synthesis and Q&amp;A.</p>
+              </div>
+
+              <div class="repo-quick-control">
+                <i data-feather="archive"></i>
+                <select id="repo-quick-select" class="repo-quick-dropdown" onchange="onRepoQuickSelect(this.value)"
+                  title="Load an existing dossier into Studio" aria-label="Load Saved Dossier">
+                  <option value="">-- Open Saved Dossier --</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Active Dossier Banner -->
+            <div id="active-dossier-pill" class="active-dossier-pill" style="display: none;">
+              <span class="dossier-beacon"></span>
+              <span class="dossier-tag">ACTIVE DOSSIER:</span>
+              <span id="active-dossier-title" class="dossier-name">None</span>
+              <button type="button" class="btn-clear-dossier" onclick="clearActiveDossier()"
+                title="Clear active dossier">×</button>
+            </div>
+
+            <!-- Research Input Capsule (Supports Drag & Drop Files Anywhere Here) -->
+            <div class="input-capsule" id="composer-input-capsule">
+              <textarea id="research-topic-input" rows="2"
+                placeholder="Ask a research question, enter any topic, or drag & drop a PDF/DOCX/CSV/TXT file here (Enter to deploy, Ctrl+K to focus)..."
+                onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); startResearch(); }"></textarea>
+
+              <div class="attached-row" id="attached-file-row" style="display: none;">
+                <div class="attached-file-badge" id="attached-file-badge" style="display: none;">
+                  <i data-feather="file-text"></i>
+                  <span id="attached-filename">doc.pdf</span>
+                  <button type="button" class="btn-remove-attachment" onclick="removeAttachment()"
+                    title="Remove Attachment">×</button>
+                </div>
+              </div>
+
+              <div id="custom-urls-drawer" class="custom-urls-drawer" style="display: none;">
+                <i data-feather="link"></i>
+                <input type="text" id="custom-urls-input"
+                  placeholder="Optional: Paste comma-separated URLs to crawl directly (e.g. https://arxiv.org/abs/..., https://...)">
+              </div>
+
+              <div class="composer-toolbar">
+                <div class="composer-left-tools">
+                  <div class="depth-pills" role="group" aria-label="Research Depth">
+                    <button type="button" class="depth-pill" data-depth="quick" onclick="setResearchDepth('quick')"
+                      title="Fast overview (~1 min, 2 searches)">⚡ Quick</button>
+                    <button type="button" class="depth-pill active" data-depth="deep" onclick="setResearchDepth('deep')"
+                      title="Balanced investigation (~2 min, 4 searches)">🔬 Standard</button>
+                    <button type="button" class="depth-pill" data-depth="exhaustive"
+                      onclick="setResearchDepth('exhaustive')" title="Exhaustive deep dive (6 searches)">🪐 Deep</button>
+                  </div>
+
+                  <div class="source-scope-wrap" title="Filter target source domain scope">
+                    <i data-feather="filter"></i>
+                    <select id="source-scope-select" class="source-scope-select" aria-label="Source Scope">
+                      <option value="all">🌐 All Web Sources</option>
+                      <option value="academic">🎓 Academic &amp; Papers</option>
+                      <option value="tech">💻 Tech &amp; GitHub</option>
+                      <option value="pdf_only">📄 Attached File Only</option>
+                    </select>
+                  </div>
+
+                  <div class="source-scope-wrap" title="Choose output format & purpose template">
+                    <i data-feather="layout"></i>
+                    <select id="report-style-select" class="source-scope-select" aria-label="Report Style">
+                      <option value="brief">📑 Executive Brief</option>
+                      <option value="academic">🎓 Academic Review</option>
+                      <option value="comparison">⚖️ Compare A vs B</option>
+                      <option value="study_guide">📘 Study Guide</option>
+                      <option value="decision">🎯 Decision Memo</option>
+                    </select>
+                  </div>
+
+                  <label class="tool-chip-btn" title="Attach local PDF, DOCX, TXT, MD, CSV, or JSON file">
+                    <input type="file" id="pdf-file-input" accept=".pdf,.docx,.txt,.md,.csv,.json"
+                      onchange="handlePdfSelect(event)" style="display:none;">
+                    <i data-feather="paperclip"></i>
+                    <span>Attach File</span>
+                  </label>
+
+                  <button type="button" class="tool-chip-btn" onclick="toggleCustomUrls()"
+                    title="Add specific target URLs to crawl">
+                    <i data-feather="link"></i>
+                    <span>URLs</span>
+                  </button>
+
+                  <button type="button" class="tool-chip-btn btn-inspire-me" onclick="inspireMeTopic()"
+                    title="Suggest a curated technical topic">
+                    <i data-feather="zap"></i>
+                    <span>✨ Inspire Me</span>
+                  </button>
+                </div>
+
+                <button id="btn-start-research" class="btn-primary-deploy" onclick="startResearch()">
+                  <i data-feather="play"></i>
+                  <span>Deploy Research</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="starter-topics-row">
+              <span class="starter-label">Try:</span>
+              <button type="button" class="chip"
+                onclick="fillPrompt('DeepSeek R1 architecture vs OpenAI o1 reasoning models')">
+                DeepSeek-R1 vs OpenAI o1
+              </button>
+              <button type="button" class="chip"
+                onclick="fillPrompt('Quantization comparison: GGUF vs AWQ vs EXL2 performance on consumer GPUs')">
+                GGUF vs AWQ Quantization
+              </button>
+              <button type="button" class="chip"
+                onclick="fillPrompt('Local Offline RAG pipelines with ChromaDB and small language models')">
+                Local RAG &amp; Vector Embeddings
+              </button>
+            </div>
+          </div>
+
+          <!-- Real-Time Execution Progress Canvas -->
+          <div id="react-execution-canvas" class="react-canvas surface-card" style="display: none;">
+            <div class="canvas-header">
+              <div class="canvas-title-group">
+                <div class="spinner-ring" id="agent-spinner"></div>
+                <div>
+                  <h3 id="canvas-status-title">Autonomous Crawler Active...</h3>
+                  <span class="canvas-topic-subtitle" id="canvas-topic-display"></span>
+                </div>
+              </div>
+
+              <div class="canvas-actions">
+                <div class="execution-hud">
+                  <span class="hud-timer-badge"><i data-feather="clock"></i> <span id="canvas-timer">00:00</span></span>
+                  <span class="step-counter-badge" id="step-counter-badge">Step 0</span>
+                </div>
+                <button type="button" id="btn-toggle-trace" class="btn-secondary-sm" onclick="toggleTraceCollapse()"
+                  title="Show / Hide live execution trace">
+                  <i data-feather="chevron-up" id="trace-chevron-icon"></i>
+                  <span>Trace</span>
+                </button>
+                <button type="button" id="btn-abort-research" class="btn-danger-sm" onclick="abortResearch()">
+                  <i data-feather="square"></i> Stop
+                </button>
+              </div>
+            </div>
+
+            <div id="trace-collapsible-body" class="trace-collapsible-body">
+              <div class="phase-stepper">
+                <div class="stepper-item active" id="phase-plan">
+                  <div class="stepper-dot"></div>
+                  <span>1. Plan</span>
+                </div>
+                <div class="stepper-line" id="line-1"></div>
+                <div class="stepper-item" id="phase-search">
+                  <div class="stepper-dot"></div>
+                  <span>2. Multi-Search</span>
+                </div>
+                <div class="stepper-line" id="line-2"></div>
+                <div class="stepper-item" id="phase-scrape">
+                  <div class="stepper-dot"></div>
+                  <span>3. Deep Crawl</span>
+                </div>
+                <div class="stepper-line" id="line-3"></div>
+                <div class="stepper-item" id="phase-memory">
+                  <div class="stepper-dot"></div>
+                  <span>4. Vector Index</span>
+                </div>
+                <div class="stepper-line" id="line-4"></div>
+                <div class="stepper-item" id="phase-synthesize">
+                  <div class="stepper-dot"></div>
+                  <span>5. Synthesize</span>
+                </div>
+              </div>
+
+              <div class="steps-stream" id="steps-stream-container"></div>
+            </div>
+          </div>
+
+          <!-- Synthesized Report Studio -->
+          <div id="report-studio-container" class="report-studio surface-card" style="display: none;">
+            <div class="report-header-bar">
+              <div class="report-title-block">
+                <div class="report-badge-row">
+                  <span class="report-badge">VERIFIED INTELLIGENCE DOSSIER</span>
+                  <span class="report-meta-timestamp" id="report-meta-timestamp"></span>
+                  <button type="button" id="btn-star-dossier" class="btn-meta-icon" onclick="toggleCurrentReportStar()"
+                    title="Bookmark / Star this dossier" aria-label="Bookmark dossier">
+                    <i data-feather="star"></i> <span>Star</span>
+                  </button>
+                  <button type="button" id="btn-rename-dossier" class="btn-meta-icon" onclick="renameCurrentReportPrompt()"
+                    title="Rename dossier title" aria-label="Rename dossier">
+                    <i data-feather="type"></i> <span>Rename</span>
+                  </button>
+                </div>
+                <h2 id="report-display-title">Research Report</h2>
+                <div class="report-telemetry-row">
+                  <span class="telemetry-pill" id="report-read-time"><i data-feather="clock"></i> 4 min read</span>
+                  <span class="telemetry-pill" id="report-slide-count"><i data-feather="airplay"></i> 8 Slides</span>
+                  <span class="telemetry-pill grounded" id="report-grounding-score"><i data-feather="shield-check"></i>
+                    Grounded Sources</span>
+                </div>
+              </div>
+
+              <div class="report-toolbar-right">
+                <div class="view-mode-pills">
+                  <button type="button" id="btn-view-doc" class="btn-mode-pill active"
+                    onclick="switchReportMode('doc')">
+                    <i data-feather="file-text"></i> Document
+                  </button>
+                  <button type="button" id="btn-view-deck" class="btn-mode-pill" onclick="switchReportMode('deck')">
+                    <i data-feather="airplay"></i> Slide Deck
+                  </button>
+                  <button type="button" id="btn-view-edit" class="btn-mode-pill" onclick="switchReportMode('edit')"
+                    title="Edit Report Markdown &amp; Save">
+                    <i data-feather="edit-3"></i> Edit
+                  </button>
+                </div>
+
+                <div class="report-export-group">
+                  <button type="button" class="btn-action" onclick="downloadReportDocx()"
+                    title="Export formatted Microsoft Word (.docx)">
+                    <i data-feather="file"></i> Word
+                  </button>
+                  <button type="button" class="btn-action" onclick="downloadReportPdf()"
+                    title="Export formatted PDF (.pdf)">
+                    <i data-feather="book-open"></i> PDF
+                  </button>
+                  <button type="button" class="btn-action" onclick="downloadReportMarkdown()"
+                    title="Download Markdown (.md)">
+                    <i data-feather="download"></i> .md
+                  </button>
+                  <button type="button" id="btn-export-csv" class="btn-action" onclick="downloadTablesCsv()"
+                    title="Extract Tables to CSV (Excel / Sheets)">
+                    <i data-feather="table"></i> CSV
+                  </button>
+                  <button type="button" class="btn-action" onclick="copyReportRichText()"
+                    title="Copy Rich-Text for Word / Docs">
+                    <i data-feather="clipboard"></i> Rich-Text
+                  </button>
+                  <button type="button" class="btn-action" onclick="copyReportMarkdown()" title="Copy Raw Markdown">
+                    <i data-feather="copy"></i> Copy MD
+                  </button>
+                  <button type="button" class="btn-action" onclick="window.print()" title="Print View">
+                    <i data-feather="printer"></i> Print
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="report-body-layout">
+              <div class="report-main-column">
+
+                <div id="doc-outline-bar" class="doc-outline-bar" style="display: none;"></div>
+
+                <article class="markdown-document" id="rendered-markdown-output"></article>
+
+                <div id="report-editor-wrapper" class="report-editor-wrapper" style="display: none;">
+                  <div class="editor-header-bar">
+                    <span class="editor-title"><i data-feather="edit-3"></i> Editing Dossier Markdown</span>
+                    <div class="editor-actions-bar">
+                      <button type="button" class="btn-secondary-sm" onclick="switchReportMode('doc')">Cancel</button>
+                      <button type="button" id="btn-save-report-edit" class="btn-primary-sm"
+                        onclick="saveEditedReport()">
+                        <i data-feather="save"></i> Save Dossier
+                      </button>
+                    </div>
+                  </div>
+                  <textarea id="report-editor-textarea" rows="20" placeholder="Edit report markdown..."></textarea>
+                </div>
+
+                <div class="slide-deck-wrapper" id="slide-deck-wrapper" style="display: none;">
+                  <div class="deck-controls-bar">
+                    <div class="deck-meta-info">
+                      <span class="slide-stage-badge" id="slide-stage-badge">✦ EXECUTIVE BRIEF</span>
+                      <span class="slide-tracker-label" id="slide-tracker-label">Slide 1 / 1</span>
+                    </div>
+                    <div class="deck-mode-toggle-group">
+                      <button type="button" id="btn-autoplay-deck" class="btn-deck-toggle"
+                        onclick="toggleAutoPlayDeck()" title="Auto-Play Presentation Slideshow">
+                        <i data-feather="play" id="autoplay-icon"></i> <span>Auto-Play</span>
+                      </button>
+                      <button type="button" id="btn-stage-view" class="btn-deck-toggle active"
+                        onclick="setDeckViewStyle('stage')" title="Interactive 16:9 Presentation Stage">
+                        <i data-feather="airplay"></i> <span>Stage View</span>
+                      </button>
+                      <button type="button" id="btn-grid-view" class="btn-deck-toggle"
+                        onclick="setDeckViewStyle('grid')" title="View all slides in overview grid">
+                        <i data-feather="grid"></i> <span>Overview Grid</span>
+                      </button>
+                      <button type="button" id="btn-fullscreen-deck" class="btn-deck-toggle"
+                        onclick="toggleFullscreenDeck()" title="Fullscreen Presentation (F)">
+                        <i data-feather="maximize"></i> <span>Fullscreen</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="slide-stage-container" id="slide-stage-container">
+                    <button type="button" class="slide-nav-btn prev" id="btn-slide-prev" onclick="navigateSlide(-1)"
+                      title="Previous Slide (←)">
+                      <i data-feather="chevron-left"></i>
+                    </button>
+                    <div class="slide-stage-screen" id="slide-stage-screen"></div>
+                    <button type="button" class="slide-nav-btn next" id="btn-slide-next" onclick="navigateSlide(1)"
+                      title="Next Slide (→)">
+                      <i data-feather="chevron-right"></i>
+                    </button>
+                  </div>
+
+                  <div class="slide-stage-footer" id="slide-stage-footer">
+                    <div class="slide-progress-dots" id="slide-progress-dots"></div>
+                    <div class="keyboard-hints">
+                      <span><kbd>←</kbd> <kbd>→</kbd> / <kbd>Space</kbd> Navigate • <kbd>F</kbd> Fullscreen</span>
+                    </div>
+                  </div>
+
+                  <div class="slide-grid-container" id="slide-grid-container" style="display: none;"></div>
+                </div>
+
+                <!-- Interactive Follow-up Q&A Assistant -->
+                <section class="research-chat-section">
+                  <div class="chat-section-header">
+                    <div class="chat-title-badge">
+                      <i data-feather="message-square"></i>
+                      <span>Interactive Questioning</span>
+                    </div>
+                    <div class="chat-header-controls">
+                      <button type="button" id="chat-web-augment-toggle" class="btn-web-augment"
+                        onclick="toggleChatWebAugment()"
+                        title="Fetch additional live web data if a follow-up detail isn't in the report">
+                        <i data-feather="globe"></i> <span>Web Augment: Off</span>
+                      </button>
+                      <button type="button" class="btn-text-xs" onclick="clearChatThread()"
+                        title="Clear chat conversation">Clear</button>
+                    </div>
+                  </div>
+
+                  <div class="chat-prompt-chips">
+                    <button type="button" class="chat-chip"
+                      onclick="fillChatQuestion('Summarize all quantitative metrics, numbers, and benchmarks from these sources.')">📊
+                      Key Metrics</button>
+                    <button type="button" class="chat-chip"
+                      onclick="fillChatQuestion('What are the core technical trade-offs and architectural bottlenecks?')">⚖️
+                      Trade-offs</button>
+                    <button type="button" class="chat-chip"
+                      onclick="fillChatQuestion('What are the future outlook, deployment costs, and practical limitations?')">🔮
+                      Limitations &amp; Outlook</button>
+                    <button type="button" class="chat-chip"
+                      onclick="fillChatQuestion('Provide a concise executive verdict, key findings, and recommended next steps.')">🎯
+                      Verdict</button>
+                  </div>
+
+                  <div class="chat-messages-container" id="chat-messages-container">
+                    <div class="chat-msg assistant">
+                      <div class="msg-avatar"><i data-feather="cpu"></i></div>
+                      <div class="msg-content">
+                        <div class="msg-text-content">Ask any question about the researched topic to get direct findings
+                          here.</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="chat-input-bar">
+                    <input type="text" id="chat-question-input"
+                      placeholder="Ask a follow-up question about this dossier..."
+                      onkeydown="if(event.key==='Enter') sendFollowUpQuestion();">
+                    <button type="button" class="btn-chat-send" onclick="sendFollowUpQuestion()" title="Send Question">
+                      <i data-feather="send"></i>
+                    </button>
+                  </div>
+                </section>
+              </div>
+
+              <!-- Grounded Evidence & Citations Sidebar -->
+              <aside class="citations-sidebar">
+                <div class="citations-header">
+                  <div class="citations-title-wrap">
+                    <i data-feather="bookmark"></i>
+                    <h3>Sources (<span id="citations-count">0</span>)</h3>
+                  </div>
+                  <div class="citations-filter-wrap">
+                    <i data-feather="search" class="filter-icon"></i>
+                    <input type="text" id="citations-filter-input" placeholder="Filter sources..."
+                      oninput="filterCitationsList(this.value)">
+                  </div>
+                </div>
+                <div class="citations-list" id="citations-list-container"></div>
+              </aside>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- VIEW 2: VECTOR MEMORY EXPLORER                       -->
+        <!-- ==================================================== -->
+        <section id="view-memory" class="view-panel" style="display: none;">
+          <div class="surface-card panel-container">
+            <div class="panel-header">
+              <div>
+                <h2>Vector Memory &amp; Embeddings</h2>
+                <p>Explore indexed knowledge chunks and run semantic similarity queries against your local store.</p>
+              </div>
+              <div class="panel-actions">
+                <button type="button" class="btn-secondary-sm" onclick="loadMemoryExplorer()">
+                  <i data-feather="refresh-cw"></i> Refresh
+                </button>
+                <button type="button" class="btn-danger-sm" onclick="clearMemoryConfirm()">
+                  <i data-feather="trash-2"></i> Clear Memory
+                </button>
+              </div>
+            </div>
+
+            <div class="memory-search-bar">
+              <div class="search-input-wrap">
+                <i data-feather="search"></i>
+                <input type="text" id="memory-search-input" placeholder="Semantic search against memory chunks..."
+                  onkeydown="if(event.key==='Enter') searchMemory();">
+              </div>
+              <button type="button" class="btn-primary-sm" onclick="searchMemory()">Query Memory</button>
+            </div>
+
+            <div class="memory-chunks-grid" id="memory-chunks-grid">
+              <div class="empty-state">
+                <i data-feather="database"></i>
+                <p>Loading vector memory data...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- VIEW 3: RESEARCH REPOSITORY & DOSSIER ARCHIVE        -->
+        <!-- ==================================================== -->
+        <section id="view-reports" class="view-panel" style="display: none;">
+          <div class="surface-card panel-container">
+            <div class="panel-header">
+              <div>
+                <h2>Research Knowledge Repository</h2>
+                <p>Search, bookmark, rename, and load saved research dossiers back into the Studio for visualization
+                  and follow-up analysis.</p>
+              </div>
+              <div class="panel-actions">
+                <div class="search-input-wrap report-filter-wrap">
+                  <i data-feather="search"></i>
+                  <input type="text" id="reports-search-input" placeholder="Filter reports by keyword..."
+                    oninput="filterReportsArchive(this.value)">
+                </div>
+                <button type="button" class="btn-secondary-sm" onclick="loadReportsArchive()">
+                  <i data-feather="refresh-cw"></i> Refresh
+                </button>
+              </div>
+            </div>
+
+            <div class="repo-filter-tags">
+              <button type="button" class="repo-tag-pill active" data-filter="all"
+                onclick="filterReportsCategory('all')">All Dossiers</button>
+              <button type="button" class="repo-tag-pill" data-filter="starred"
+                onclick="filterReportsCategory('starred')">⭐ Starred</button>
+              <button type="button" class="repo-tag-pill" data-filter="recent"
+                onclick="filterReportsCategory('recent')">Recent (Top 5)</button>
+              <button type="button" class="repo-tag-pill" data-filter="comparative"
+                onclick="filterReportsCategory('comparative')">Comparative &amp; Benchmarks</button>
+              <button type="button" class="repo-tag-pill" data-filter="technical"
+                onclick="filterReportsCategory('technical')">Architecture &amp; Technical</button>
+            </div>
+
+            <div class="reports-grid" id="reports-archive-grid"></div>
+          </div>
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- VIEW 4: DIRECT TOOLS SANDBOX                         -->
+        <!-- ==================================================== -->
+        <section id="view-tools" class="view-panel" style="display: none;">
+          <div class="tools-grid-layout">
+
+            <div class="surface-card tool-box">
+              <div class="tool-header">
+                <i data-feather="globe" class="tool-icon"></i>
+                <div>
+                  <h3>Multi-Engine Web Search</h3>
+                  <p>Test resilient live search across DuckDuckGo, Semantic Scholar, Wikipedia &amp; arXiv.</p>
+                </div>
+              </div>
+              <div class="tool-body">
+                <div class="tool-input-row">
+                  <input type="text" id="direct-search-input" placeholder="Enter search keywords..."
+                    onkeydown="if(event.key==='Enter') testDirectSearch();">
+                  <button type="button" class="btn-primary-sm" onclick="testDirectSearch()">Search</button>
+                </div>
+                <div class="tool-output-area" id="direct-search-output">
+                  <span class="dim-text">Search results will appear here...</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="surface-card tool-box">
+              <div class="tool-header">
+                <i data-feather="external-link" class="tool-icon"></i>
+                <div>
+                  <h3>Webpage Content Extractor</h3>
+                  <p>Extracts clean article text &amp; page titles, discarding navigation and ads.</p>
+                </div>
+              </div>
+              <div class="tool-body">
+                <div class="tool-input-row">
+                  <input type="text" id="direct-scrape-input" placeholder="https://arxiv.org/abs/..."
+                    onkeydown="if(event.key==='Enter') testDirectScrape();">
+                  <button type="button" class="btn-primary-sm" onclick="testDirectScrape()">Scrape</button>
+                </div>
+                <div class="tool-output-area" id="direct-scrape-output">
+                  <span class="dim-text">Clean extracted text will appear here...</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="surface-card tool-box full-width">
+              <div class="tool-header">
+                <i data-feather="file-text" class="tool-icon"></i>
+                <div>
+                  <h3>Universal Document Chunker &amp; Indexer</h3>
+                  <p>Upload PDF, Word (.docx), Text (.txt), Markdown (.md), CSV, or JSON files to index into vector
+                    memory.</p>
+                </div>
+              </div>
+              <div class="tool-body">
+                <div class="drop-zone" id="pdf-drop-zone">
+                  <i data-feather="upload-cloud"></i>
+                  <p>Drag &amp; drop PDF / DOCX / TXT / MD / CSV here, or <span class="browse-link">click to
+                      browse</span></p>
+                  <input type="file" id="direct-pdf-input" accept=".pdf,.docx,.txt,.md,.csv,.json"
+                    onchange="uploadDirectPdf(event)" style="display:none;">
+                </div>
+                <div class="tool-output-area" id="direct-pdf-output" style="margin-top: 1rem;">
+                  <span class="dim-text">Document extraction statistics will appear here...</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Source Preview Modal -->
+  <div id="source-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-content surface-card">
+      <div class="modal-header">
+        <h3 id="modal-source-title">Source Document</h3>
+        <button type="button" class="btn-close-modal" onclick="closeSourceModal()">×</button>
+      </div>
+      <div class="modal-url" id="modal-source-url"></div>
+      <div class="modal-body" id="modal-source-body">
+        Loading source text...
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Engine, System Health & Multi-Device Access Modal -->
+  <div id="settings-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-content surface-card settings-modal-content">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <i data-feather="settings"></i>
+          <h3>AI Engine, System Health &amp; Multi-Device Access</h3>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeSettingsModal()">×</button>
+      </div>
+
+      <div class="modal-body settings-modal-body">
+        <!-- System Diagnostics Grid -->
+        <div class="settings-section">
+          <div class="settings-section-title">Live System Diagnostics</div>
+          <div id="settings-health-grid" class="settings-health-grid">
+            <div class="dim-text">Checking system health...</div>
+          </div>
+        </div>
+
+        <!-- Engine Provider Configuration -->
+        <div class="settings-section">
+          <div class="settings-section-title">AI Synthesis Provider</div>
+          <div class="settings-form-grid">
+            <label class="settings-field">
+              <span>Routing Mode</span>
+              <select id="cfg-provider-mode">
+                <option value="auto">Auto (Ollama → Configured API → Offline Fact Engine)</option>
+                <option value="ollama">Local Ollama Only</option>
+                <option value="openai_compatible">OpenAI-Compatible Cloud / Local API</option>
+                <option value="extractive">Offline Fact Engine Only (Zero LLM)</option>
+              </select>
+            </label>
+
+            <label class="settings-field">
+              <span>Local Ollama URL</span>
+              <input type="text" id="cfg-ollama-host" placeholder="http://127.0.0.1:11434">
+            </label>
+
+            <label class="settings-field">
+              <span>API Provider Preset</span>
+              <select id="cfg-openai-preset" onchange="onProviderPresetChange(this.value)">
+                <option value="groq">Groq Cloud (Fast / Free Tier)</option>
+                <option value="gemini">Google Gemini (OpenAI Endpoint)</option>
+                <option value="openrouter">OpenRouter</option>
+                <option value="lmstudio">LM Studio (Localhost)</option>
+                <option value="custom">Custom OpenAI-Compatible</option>
+              </select>
+            </label>
+
+            <label class="settings-field">
+              <span>API Model ID</span>
+              <input type="text" id="cfg-openai-model" placeholder="e.g. llama-3.3-70b-versatile or gemini-2.5-flash">
+            </label>
+
+            <label class="settings-field full-span">
+              <span>API Base URL</span>
+              <input type="text" id="cfg-openai-base-url" placeholder="https://api.groq.com/openai/v1">
+            </label>
+
+            <div class="settings-field full-span">
+              <span>API Key <small id="cfg-api-key-status" class="dim-text"></small></span>
+              <div class="settings-inline-row">
+                <input type="password" id="cfg-openai-api-key"
+                  placeholder="Optional: paste API key (stored locally in data/user_settings.json)">
+                <button type="button" class="btn-secondary-sm" onclick="clearSavedApiKey()"
+                  title="Remove stored API key">Clear Key</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="settings-test-result" class="settings-test-result" style="display: none;"></div>
+
+          <div class="settings-actions-row">
+            <button type="button" class="btn-secondary-sm" onclick="testProviderConnectionFromModal()">
+              <i data-feather="activity"></i> Test Connection
+            </button>
+            <button type="button" class="btn-primary-sm" onclick="saveSettingsFromModal()">
+              <i data-feather="save"></i> Save Settings
+            </button>
+          </div>
+        </div>
+
+        <!-- Ollama Quick Model Pull & Cache Controls -->
+        <div class="settings-section">
+          <div class="settings-section-title">Maintenance &amp; Local Models</div>
+          <div class="settings-inline-row">
+            <input type="text" id="cfg-pull-model-name" placeholder="Ollama model tag to pull (e.g. qwen2.5:7b)">
+            <button type="button" class="btn-secondary-sm" onclick="pullOllamaModelFromModal()">Pull Model</button>
+            <button type="button" class="btn-secondary-sm" onclick="clearDiskCacheFromModal()">Clear Cache</button>
+          </div>
+        </div>
+
+        <!-- Multi-Device / Phone Wi-Fi Access -->
+        <div class="settings-section">
+          <div class="settings-section-title">Use Anytime Across Devices (Wi-Fi / LAN)</div>
+          <div class="lan-access-box">
+            <div class="lan-urls">
+              <div><strong>This Computer:</strong> <code id="lan-local-url">http://127.0.0.1:8080</code></div>
+              <div><strong>Phone / Tablet (when launched via run_lan.bat):</strong> <code
+                  id="lan-wifi-url">Checking...</code></div>
+            </div>
+            <button type="button" class="btn-secondary-sm" onclick="copyLanAccessUrl()">
+              <i data-feather="copy"></i> Copy LAN URL
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts Guide Modal -->
+  <div id="shortcuts-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-content surface-card shortcuts-modal-content">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <i data-feather="command"></i>
+          <h3>Keyboard Shortcuts</h3>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeShortcutsModal()">×</button>
+      </div>
+      <div class="shortcuts-grid">
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>K</kbd> / <kbd>/</kbd></span>
+          <span class="shortcut-desc">Focus Research Input</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>Enter</kbd></span>
+          <span class="shortcut-desc">Deploy Research from Query Box</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>1</kbd> - <kbd>4</kbd></span>
+          <span class="shortcut-desc">Switch Views (Studio, Repository, Memory, Sandbox)</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>→</kbd> / <kbd>Space</kbd></span>
+          <span class="shortcut-desc">Next Presentation Slide</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>←</kbd></span>
+          <span class="shortcut-desc">Previous Presentation Slide</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>Home</kbd> / <kbd>End</kbd></span>
+          <span class="shortcut-desc">Jump to First / Last Slide</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>F</kbd></span>
+          <span class="shortcut-desc">Toggle Fullscreen Presentation Stage</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>Esc</kbd></span>
+          <span class="shortcut-desc">Close Modal / Exit Fullscreen</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-keys"><kbd>?</kbd></span>
+          <span class="shortcut-desc">Toggle Shortcuts Guide</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <canvas id="celebration-canvas" class="celebration-canvas" style="display:none;"></canvas>
+
+  <script src="/static/app.js?v=6.0"></script>
+</body>
+
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <title>CSE 3202 - AI Project Presentation Guide (Bengali)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4;
+      margin: 1.8cm 1.6cm 1.8cm 1.6cm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 9pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.65;
+      color: #1e293b;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Hind Siliguri', 'Outfit', sans-serif;
+      color: #0f172a;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: 22pt;
+      color: #0a192f;
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 0.4rem;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 15pt;
+      color: #0369a1;
+      border-left: 4px solid #0284c7;
+      padding-left: 0.5rem;
+      margin-top: 1.8rem;
+    }
+
+    h3 {
+      font-size: 12pt;
+      color: #1e293b;
+      margin-top: 1rem;
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+      text-align: justify;
+    }
+
+    .cover-card {
+      background: linear-gradient(135deg, #091224 0%, #0f172a 100%);
+      color: #ffffff;
+      padding: 2.2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      border-left: 6px solid #f6c79a;
+    }
+
+    .cover-card h1 {
+      color: #ffffff;
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0.4rem;
+      font-size: 22pt;
+    }
+
+    .cover-tagline {
+      font-size: 12pt;
+      color: #f6c79a;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      font-size: 9.5pt;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 1rem;
+    }
+
+    .cover-meta strong {
+      color: #ffffff;
+    }
+
+    .callout {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      padding: 0.9rem 1.1rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      font-size: 10pt;
+    }
+
+    .callout.tip {
+      background: #fefce8;
+      border-left-color: #ca8a04;
+    }
+
+    .callout.danger {
+      background: #fff1f2;
+      border-left-color: #e11d48;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 9.5pt;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    tr:nth-child(even) td {
+      background: #fbfcfe;
+    }
+
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+      padding-left: 1.4rem;
+    }
+
+    li {
+      margin-bottom: 0.35rem;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      background: #f1f5f9;
+      color: #0284c7;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      background: #091224;
+      color: #f1f5f9;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+
+    .diagram-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 1.2rem 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      line-height: 1.4;
+      white-space: pre;
+      color: #0f172a;
+    }
+
+    .qa-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      page-break-inside: avoid;
+    }
+
+    .qa-question {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0369a1;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .qa-answer {
+      font-size: 10pt;
+      color: #334155;
+      text-align: justify;
+    }
+
+    .qa-keywords {
+      margin-top: 0.5rem;
+      font-size: 8.5pt;
+      color: #64748b;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+
+    .section-num {
+      color: #0284c7;
+      margin-right: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover / Header Banner -->
+  <div class="cover-card">
+    <h1>EOSAI: Autonomous AI Research Studio</h1>
+    <div class="cover-tagline">100% Offline-First Cognitive Agent, Multi-Source Crawler & Presentation Intelligence System</div>
+    <div class="cover-meta">
+      <div><strong>Course:</strong> CSE 3202 – Artificial Intelligence</div>
+      <div><strong>Project Type:</strong> Autonomous Agentic System / RAG Pipeline</div>
+      <div><strong>Engine Architecture:</strong> ReAct Loop + Vector RAG + Ollama</div>
+      <div><strong>Document Target:</strong> Teacher Defense & Technical Viva Explanation</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: MOTIVATION -->
+  <h2><span class="section-num">১.</span> প্রজেক্টের পটভূমি ও মূল উদ্দেশ্য (Motivation & Problem Statement)</h2>
+  <p>
+    বর্তমান সময়ে <strong>ChatGPT</strong> বা <strong>Claude</strong>-এর মতো ক্লাউড-বেইজড লার্জ ল্যাঙ্গুয়েজ মডেল (LLM) অত্যন্ত জনপ্রিয় হলেও একাডেমিক ও এন্টারপ্রাইজ গবেষণায় এদের তিনটি বড় সীমাবদ্ধতা রয়েছে:
+  </p>
+  <ol>
+    <li><strong>তথ্য হ্যালুসিনেশন (Hallucination):</strong> সাধারণ এলএলএম কোনো লাইভ প্রমাণ ছাড়া মনগড়া তথ্য, মিথ্যা সাইটেশন বা কাল্পনিক স্ট্যাটিস্টিক্স তৈরি করে ফেলে।</li>
+    <li><strong>ইন্টারনেট ও প্রাইভেসি নির্ভরতা:</strong> ক্লাউড এপিআই ব্যবহারের জন্য নিরবচ্ছিন্ন ইন্টারনেট এবং পেইড সাবস্ক্রিপশন প্রয়োজন হয়। স্পর্শকাতর গবেষণা বা ইন্টারনাল ডকুমেন্ট ক্লাউডে পাঠালে গোপনীয়তা নষ্ট হয়।</li>
+    <li><strong>অটোনোমাস রিসার্চের অভাব:</strong> সাধারণ চ্যাটবট নিজে নিজে একাধিক সার্চ কোয়েরি তৈরি করে ইন্টারনেটের গভীর থেকে জার্নাল, উইকিপিডিয়া বা পিডিএফ পড়ে ফ্যাক্ট ভেরিফাই করতে পারে না।</li>
+  </ol>
+  <div class="callout">
+    <strong>আমাদের সমাধান:</strong> আমরা এমন একটি সম্পূর্ণ <strong>১০০% লোকাল-ফার্স্ট অটোনোমাস এআই রিসার্চ স্টুডিও</strong> তৈরি করেছি যা ইউজারের দেওয়া যেকোনো জটিল বিষয়ের উপর নিজে নিজে একাধিক সাব-কোয়েরি তৈরি করে, স্বয়ংক্রিয়ভাবে ওয়েব ও পিডিএফ স্ক্র্যাপ করে, ভেক্টর মেমোরিতে ইনডেক্স করে, এবং কোনো পেইড ক্লাউড এপিআই ছাড়াই এক্সিকিউটিভ সামারি, সাইটেশন ও ১৬:৯ প্রেজেন্টেশন স্লাইড তৈরি করে দেয়।
+  </div>
+
+  <!-- SECTION 2: ARCHITECTURE -->
+  <h2><span class="section-num">২.</span> সিস্টেম আর্কিটেকচার (System Architecture)</h2>
+  <p>
+    আমাদের সিস্টেমটি একটি মডুলার, মাল্টি-লেয়ারড আর্কিটেকচারে বিভক্ত। নিচে সম্পূর্ণ সিস্টেমের ব্লক ডায়াগ্রাম দেওয়া হলো:
+  </p>
+
+  <div class="diagram-box">
++-----------------------------------------------------------------------------------+
+|                           USER INTERACTION LAYER (Frontend)                       |
+|   • Cinematic EOSAI UI (Vanilla JS, CSS3, Google Fonts: Cormorant & Syne)        |
+|   • Real-Time EventSource (Server-Sent Events / SSE)                              |
+|   • 16:9 Slide Deck Presentation Engine (Stage & Grid View, Keyboard Nav)         |
+|   • Interactive Q&A Assistant, Vector Memory Explorer & Markdown/HTML/JSON Export |
++-----------------------------------------------------------------------------------+
+                                        │  ▲ (Live Step Streaming & Reports)
+                                        ▼  │
++-----------------------------------------------------------------------------------+
+|                        APPLICATION CONTROLLER (FastAPI Server)                    |
+|   • Asynchronous Event Loop + Concurrent ThreadPool Dispatch                      |
+|   • Endpoints: /api/stream-research (SSE), /api/cancel-research, /api/chat, etc.   |
++-----------------------------------------------------------------------------------+
+                                        │  ▲
+                                        ▼  │
++-----------------------------------------------------------------------------------+
+|                       COGNITIVE ENGINE (core/agent_engine.py)                     |
+|   • ReAct Loop (Reasoning + Acting + Observation)                                 |
+|   • Multi-Query Subtask Decomposition (Dynamic Breakdown)                         |
+|   • Extractive Fact Synthesizer (Zero-Hallucination Fallback Engine)              |
++-----------------------------------------------------------------------------------+
+             │                              │                            │
+             ▼                              ▼                            ▼
++-------------------------+   +---------------------------+   +---------------------+
+|      SEARCH ENGINE      |   |    DEEP CRAWLER & SCRAPER |   | VECTOR MEMORY (RAG) |
+| • DuckDuckGo Search     |   | • Trafilatura Engine      |   | • ChromaDB Store    |
+| • Wikipedia API Fallback|   | • BeautifulSoup4 Fallback |   | • MiniLM Embeddings |
+| • In-Memory Dedupe Cache|   | • Fast Fail-Safe (3.5s)   |   | • PDF Chunker (500) |
++-------------------------+   +---------------------------+   +---------------------+
+                                            │
+                                            ▼
++-----------------------------------------------------------------------------------+
+|                      LOCAL INFERENCE LAYER (core/ollama_client.py)                |
+|   • Ollama Daemon running locally on http://127.0.0.1:11434                        |
+|   • Supported Models: llama3.2:3b (default), qwen2.5:7b, mistral:7b               |
++-----------------------------------------------------------------------------------+
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 3: CORE COMPONENTS -->
+  <h2><span class="section-num">৩.</span> মূল কম্পোনেন্টসমূহের টেকনিক্যাল ব্যাখ্যা (Core Components)</h2>
+
+  <h3>১. রিঅ্যাক্ট এজেন্ট লুপ (ReAct Loop - Reasoning + Acting):</h3>
+  <p>
+    <code>core/agent_engine.py</code> ফাইলে এই অ্যালগরিদমটি বাস্তবায়িত। প্রচলিত চ্যাটবট একবারে উত্তর দিয়ে দেয়। কিন্তু আমাদের এজেন্ট রিঅ্যাক্ট (ReAct) মেথডোলজিতে কাজ করে:
+  </p>
+  <ul>
+    <li><strong>Thought (চিন্তাভাবনা):</strong> মডেল প্রথমে চিন্তা করে লক্ষ্য অর্জনের জন্য পরবর্তী পদক্ষেপ কী হওয়া উচিত।</li>
+    <li><strong>Action (পদক্ষেপ গ্রহণ):</strong> কোনো টুল (যেমন: <code>web_search</code>, <code>scrape_page</code>, <code>load_pdf</code>, <code>vector_search</code>) নির্বাচন করে।</li>
+    <li><strong>Observation (পর্যবেক্ষণ):</strong> টুলের আউটপুট বিশ্লেষণ করে এবং মেমোরিতে যুক্ত করে পরবর্তী ধাপে যায়।</li>
+  </ul>
+
+  <h3>২. আরএজি এবং ভেক্টর মেমোরি (RAG & Local Vector Store):</h3>
+  <p>
+    <code>tools/vector_store.py</code>-এ আমরা ওপেন-সোর্স <strong>ChromaDB</strong> ব্যবহার করেছি। যখনই কোনো ওয়েবপেজ বা পিডিএফ স্ক্র্যাপ করা হয়, সেটিকে ৫০০ অক্ষরের চাংকে বিভক্ত করে <code>all-MiniLM-L6-v2</code> এমবেডিং মডেল দিয়ে ভেক্টরে রূপান্তর করে ডাটাবেজে স্টোর করা হয়। পরবর্তীতে ইউজারের ফলো-আপ প্রশ্নের উত্তর দিতে কোসাইন সিমিলারিটি (Cosine Similarity) দিয়ে সবচেয়ে প্রাসঙ্গিক চাংকগুলো খুঁজে এনে প্রম্পটে ইনজেক্ট করা হয়।
+  </p>
+
+  <h3>৩. রেজিলিয়েন্ট সার্চ ইঞ্জিন (DuckDuckGo + Wikipedia Fallback):</h3>
+  <p>
+    <code>tools/local_search.py</code>-এ সম্পূর্ণ ফ্রি ও আনলিমিটেড সার্চ সুবিধা নিশ্চিত করা হয়েছে। যদি অতিরিক্ত রিকোয়েস্টের কারণে DuckDuckGo সাময়িকভাবে রেট-লিমিট বা টাইমআউট দেয়, সিস্টেম স্বয়ংক্রিয়ভাবে <strong>Wikipedia Open Search API</strong>-তে ফলব্যাক করে। এছাড়াও ইন-মেমোরি ক্যাশিং থাকায় একই কোয়েরি একাধিকবার ইন্টারনেটে পাঠিয়ে ব্যান্ডউইথ নষ্ট করা হয় না।
+  </p>
+
+  <h3>৪. ফাস্ট-ফেইলওয়েল স্ক্র্যাপার (Concurrent Web Scraper):</h3>
+  <p>
+    <code>tools/local_scraper.py</code>-এ <strong>Trafilatura</strong> ও <strong>BeautifulSoup4</strong> ব্যবহার করা হয়েছে। কোনো ভারী ওয়েবসাইট যেন সিস্টেমকে আটকে না রাখতে পারে, সেজন্য সর্বোচ্চ ৩.৫ সেকেন্ডের টাইমআউট এবং জিরো-রিট্রাই পলিসি রাখা হয়েছে। একাধিক ক্যান্ডিডেট লিঙ্ককে <code>ThreadPoolExecutor</code> দিয়ে সমান্তরালভাবে (parallelly) স্ক্র্যাপ করা হয়।
+  </p>
+
+  <h3>৫. ফল্ট-টলারেন্ট দ্বৈত সিন্থেসাইজার (Dual-Mode Synthesis):</h3>
+  <p>
+    পিসিতে যদি Ollama ইনস্টল বা চালু না-ও থাকে, তবুও সিস্টেম কখনো ক্র্যাশ করবে না। <code>ExtractiveFactSynthesizer</code> স্বয়ংক্রিয়ভাবে স্ক্র্যাপ করা সোর্স থেকে সরাসরি পরিসংখ্যান, সাল, ডাটা পয়েন্ট, এবং মূল বাক্যগুলো উদ্ধার করে সম্পূর্ণ অথেন্টিক এক্সিকিউটিভ রিপোর্ট তৈরি করে দেয়।
+  </p>
+
+  <!-- SECTION 4: PIPELINE -->
+  <h2><span class="section-num">৪.</span> একটি রিসার্চ কোয়েরি যেভাবে প্রসেস হয় (Step-by-Step Data Pipeline)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">ধাপ</th>
+        <th style="width: 25%;">অ্যাকশন</th>
+        <th style="width: 60%;">কী ঘটছে (Behind the Scenes)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>ধাপ ১</strong></td>
+        <td>Query Decomposition</td>
+        <td>ইউজারের ইনপুট করা মূল বিষয়কে ২ থেকে ৬টি বিশেষায়িত সার্চ ডাইমেনশনে (Overview, Architecture, Benchmarks, Applications) বিভক্ত করা হয়।</td>
+      </tr>
+      <tr>
+        <td><strong>ধাপ ২</strong></td>
+        <td>Multi-Search & Caching</td>
+        <td>সাব-কোয়েরিগুলো দিয়ে DuckDuckGo এবং Wikipedia থেকে সেরা লিঙ্ক ও স্নsnippet আনা হয় এবং ক্যাশে রাখা হয়।</td>
+      </tr>
+      <tr>
+        <td><strong>ধাপ ৩</strong></td>
+        <td>Concurrent Scraping</td>
+        <td>সেরা অথরিটেটিভ আর্টিকেলগুলোর বডি টেক্সট সমান্তরাল থ্রেডে স্ক্র্যাপ করা হয় (বিজ্ঞাপন ও এইচটিএমএল ট্যাগ ফেলে দিয়ে)।</td>
+      </tr>
+      <tr>
+        <td><strong>ধাপ ৪</strong></td>
+        <td>Vector Store Indexing</td>
+        <td>স্ক্র্যাপ করা টেক্সট চাংক করে ভেক্টর এমবেডিংসহ ChromaDB-তে সংরক্ষণ করা হয়।</td>
+      </tr>
+      <tr>
+        <td><strong>ধাপ ৫</strong></td>
+        <td>Synthesis & Citations</td>
+        <td>তথ্যগুলো একত্রিত করে সাইটেশন ([1], [2]) সহ স্ট্রাকচার্ড রিপোর্ট এবং ৫টি প্রেজেন্টেশন স্লাইড তৈরি করা হয়।</td>
+      </tr>
+      <tr>
+        <td><strong>ধাপ ৬</strong></td>
+        <td>Live Delivery & Q&A</td>
+        <td>Server-Sent Events (SSE)-এর মাধ্যমে ব্রাউজারে লাইভ প্রগ্রেস ও ফাইনাল স্লাইড ডেক দেখানো হয়। ইউজার চাইলে যেকোনো প্রশ্ন করে আরএজি চ্যাট করতে পারে।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 5: TEACHER VIVA Q&A -->
+  <h2><span class="section-num">৫.</span> টিচার/প্রফেসরের সম্ভাব্য ভাইভা প্রশ্ন ও টেকনিক্যাল উত্তর (Viva Defense Q&A)</h2>
+  <p>
+    প্রজেক্ট প্রদর্শনের সময় শিক্ষক যেসব গভীর টেকনিক্যাল প্রশ্ন করতে পারেন এবং আপনাকে যেভাবে উত্তর দিতে হবে:
+  </p>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ১: ReAct (Reasoning + Acting) প্যাটার্ন কেন ব্যবহার করেছ? সাধারণ প্রম্পটিং কেন নয়?</div>
+    <div class="qa-answer">
+      <strong>উত্তর:</strong> সাধারণ প্রম্পটিংয়ে মডেল তার অভ্যন্তরীণ মুখস্থ ডাটা থেকে সরাসরি উত্তর দেয়, যা অনেক সময় পুরনো বা ভুল হয়। কিন্তু <em>ReAct</em> আর্কিটেকচারে মডেল প্রথমে নিজে <em>Reasoning</em> (যুক্তি) করে কোন তথ্যটি তার জানা নেই, তারপর নির্দিষ্ট টুল (যেমন: ওয়েব সার্চ বা স্ক্র্যাপার) দিয়ে <em>Action</em> নেয়, প্রাপ্ত ফলাফল <em>Observation</em> করে এবং ধাপে ধাপে চূড়ান্ত সিদ্ধান্তে পৌঁছায়। এতে সিস্টেমের যুক্তিগ্রাহ্যতা ও স্বচ্ছতা নিশ্চিত হয়।
+    </div>
+    <div class="qa-keywords">🔑 কী-ওয়ার্ডস: Thought-Action-Observation Loop, Dynamic Tool Dispatching, Multi-step Decision Making</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ২: এই প্রজেক্টে RAG (Retrieval-Augmented Generation) কীভাবে কাজ করছে?</div>
+    <div class="qa-answer">
+      <strong>উত্তর:</strong> আমাদের সিস্টেমে আরএজি দুটি পর্যায়ে কাজ করে। প্রথমত, লাইভ ওয়েব স্ক্র্যাপ বা আপলোড করা পিডিএফ ফাইলের সম্পূর্ণ টেক্সটকে ৫০০ অক্ষরের চাংকে ভাগ করা হয়। দ্বিতীয়ত, <code>all-MiniLM-L6-v2</code> মডেল দিয়ে ৩৮৪-ডাইমেনশনের ডেনস ভেক্টর তৈরি করে ChromaDB-তে সংরক্ষণ করা হয়। ইউজার যখন রিপোর্ট পড়ে কোনো ক্রস-প্রশ্ন করে, প্রশ্নটির ভেক্টরের সাথে মেমোরির চাংকগুলোর <em>Cosine Similarity</em> হিসাব করে টপ-কে (Top-k) চাংকগুলো উদ্ধার করা হয় এবং এলএলএম প্রম্পটে গ্রাউন্ডেড কনটেক্সট হিসেবে পাঠানো হয়।
+    </div>
+    <div class="qa-keywords">🔑 কী-ওয়ার্ডস: ChromaDB, Sentence-Transformers, Chunk Overlap, Dense Vector Retrieval, Grounded Prompting</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৩: মডেলের হ্যালুসিনেশন (Hallucination) কীভাবে প্রতিরোধ করেছ?</div>
+    <div class="qa-answer">
+      <strong>উত্তর:</strong> আমরা ট্রিপল-লেয়ার গার্ডরেইল ব্যবহার করেছি:
+      <ol style="margin-top:0.3rem; margin-bottom:0.3rem;">
+        <li><strong>Strict System Prompt:</strong> এলএলএমকে নির্দেশ দেওয়া আছে শুধুমাত্র উদ্ধারকৃত সোর্স ডকুমেন্ট থেকে ফ্যাক্টস উদ্ধৃত করতে এবং প্রতিটি দাবির সাথে সাইটেশন ট্যাগ [1], [2] যুক্ত করতে।</li>
+        <li><strong>Deterministic Extractive Synthesizer:</strong> মডেল যদি বন্ধ থাকে বা কোনো কারণে ভুল করতে চায়, আমাদের নিজস্ব রেগুলার এক্সপ্রেশন ও এনএলপি বেসড এক্সট্র্যাক্টর সরাসরি র ফাইল থেকে সংখ্যা, মেট্রিক্স ও কি-ওয়ার্ডগুলো আলাদা করে রিপোর্টে তুলে ধরে।</li>
+        <li><strong>Transparent Source Inspector:</strong> ইউজার যেকোনো সাইটেশনে ক্লিক করে মূল ওয়েবসাইটের সঠিক টেক্সট যাচাই করতে পারেন।</li>
+      </ol>
+    </div>
+    <div class="qa-keywords">🔑 কী-ওয়ার্ডস: Grounding, Source Attribution, Fact Verification, Deterministic Extractor</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৪: পিসিতে ইন্টারনেট না থাকলে বা কোনো ওয়েবসাইট ডাউন থাকলে প্রজেক্ট কি ক্র্যাশ করবে?</div>
+    <div class="qa-answer">
+      <strong>উত্তর:</strong> কখনোই না। প্রথমত, প্রতিটি নেটওয়ার্ক রিকোয়েস্টে ৩.৫ সেকেন্ডের টাইমআউট দিয়ে ফেইল-ফাস্ট রাখা হয়েছে। দ্বিতীয়ত, DuckDuckGo ব্যর্থ হলে স্বয়ংক্রিয়ভাবে Wikipedia API ব্যাকআপ হিসেবে কাজ করে। তৃতীয়ত, সম্পূর্ণ অফলাইনে ইউজার লোকাল পিডিএফ ফাইল আপলোড করে একই আরএজি পাইপলাইনে গবেষণা চালাতে পারেন।
+    </div>
+    <div class="qa-keywords">🔑 কী-ওয়ার্ডস: Fail-fast Timeout, Wikipedia Fallback, Graceful Degradation, Offline PDF RAG</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৫: ফ্লাস্ক (Flask) বা জ্যাঙ্গো (Django)-এর বদলে FastAPI কেন ব্যবহার করেছ?</div>
+    <div class="qa-answer">
+      <strong>উত্তর:</strong> আমাদের সিস্টেমে রিয়েল-টাইম <em>Server-Sent Events (SSE)</em> স্ট্রিমিং প্রয়োজন, যা ফ্লাস্কে হ্যান্ডেল করা কঠিন। FastAPI অ্যাসিনক্রোনাস (Asynchronous) আস্কি (ASGI) আর্কিটেকচারে চলে, যার ফলে ব্রাউজারে লাইভ স্টেপগুলো এক মিলি-সেকেন্ডও না আটকে মসৃণভাবে স্ট্রিম হতে পারে। এছাড়া এর বিল্ট-ইন থ্রেডপুল কনকারেন্সি থাকায় ব্যাকএন্ডের হেভি আই/ও অপারেশন ব্রাউজারের ইউআইকে ফ্রিজ করে না।
+    </div>
+    <div class="qa-keywords">🔑 কী-ওয়ার্ডস: ASGI, Server-Sent Events (SSE), Non-blocking Event Loop, ThreadPool Offloading</div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 6: HOW TO DEMO -->
+  <h2><span class="section-num">৬.</span> শিক্ষকের সামনে প্রজেক্ট লাইভ ডেমো দেওয়ার নিয়ম (Demo Script)</h2>
+  <p>
+    পরীক্ষক বা শিক্ষকের সামনে প্রজেক্ট উপস্থাপন করার সময় নিচের ধারাবাহিকতা অনুসরণ করলে সর্বোচ্চ ইমপ্যাক্ট তৈরি হবে:
+  </p>
+
+  <ol>
+    <li>
+      <strong>সার্ভার রান করা:</strong> টার্মিনালে রান করুন:
+      <pre>python main.py --ui --port 8080</pre>
+      ব্রাউজারে <code>http://127.0.0.1:8080</code> ওপেন করুন।
+    </li>
+    <li>
+      <strong>সিনেমেটিক ইন্টারফেস ও থিম প্রদর্শন:</strong>
+      <ul>
+        <li>উপরে ডানদিকের সান/মুন আইকনে ক্লিক করে ডার্ক ও লাইট থিমের স্মুথ ট্রানজিশন দেখান।</li>
+        <li>কীবোর্ডে <code>?</code> চেপে বা উপরের হেল্প আইকনে ক্লিক করে <strong>Keyboard Shortcuts Modal</strong> দেখান (Ctrl+K, F, তীর চিহ্ন)।</li>
+      </ul>
+    </li>
+    <li>
+      <strong>লাইভ অটোনোমাস রিসার্চ রান:</strong>
+      <ul>
+        <li>সার্চ বক্সে যেকোনো অ্যাডভান্সড টপিক দিন (যেমন: <em>"DeepSeek-R1 vs OpenAI o1 reasoning architecture"</em> অথবা <em>"Neuromorphic Computing Architecture"</em>)।</li>
+        <li><strong>Quick (2 Queries)</strong> সিলেক্ট করে <strong>Deploy Research</strong>-এ ক্লিক করুন।</li>
+        <li>টিচারকে দেখান কিভাবে <em>Canvas Activity HUD</em>-এ রিয়েল-টাইম টাইমার চলছে এবং লাইভ ReAct স্টেপগুলো (Search -> Scrape -> Vector Memory -> Synthesis) ব্রাউজারে ভেসে উঠছে।</li>
+      </ul>
+    </li>
+    <li>
+      <strong>১৬:৯ প্রেজেন্টেশন স্লাইড ডেক প্রদর্শন:</strong>
+      <ul>
+        <li>রিসার্চ শেষ হলে অটোমেটিক তৈরি হওয়া ৫-স্লাইডের এক্সিকিউটিভ ডেক দেখান।</li>
+        <li>কীবোর্ডের ডান/বাম তীর চিহ্ন চেপে স্লাইড নেভিগেশন দেখান।</li>
+        <li><strong>Overview Grid</strong> বাটনে ক্লিক করে সব স্লাইডের থাম্বনেইল ভিউ দেখান।</li>
+        <li>কীবোর্ডে <strong>F</strong> চেপে ফুলস্ক্রিন প্রেজেন্টেশন মোড দেখান।</li>
+      </ul>
+    </li>
+    <li>
+      <strong>ডকুমেন্ট ভিউ ও এক্সপোর্ট ফিচারস:</strong>
+      <ul>
+        <li><strong>Document</strong> ট্যাবে ক্লিক করে সাইটেশনসহ প্রফেশনাল রিসার্চ পেপার দেখান।</li>
+        <li><strong>Copy Rich-Text</strong> বাটনে ক্লিক করে ওয়ার্ড বা গুগল ডকসে পেস্ট করে দেখান (বোল্ড, হেডিং, টেবিল হুবহু কপি হয়)।</li>
+        <li><strong>Export JSON</strong> বা <strong>Export HTML</strong> দিয়ে সিঙ্গেল-ফাইল ডাউনলোড করে দেখান।</li>
+      </ul>
+    </li>
+    <li>
+      <strong>ফলো-আপ আরএজি (RAG) চ্যাটবক্স:</strong>
+      <ul>
+        <li>নিচের চ্যাটবক্সে প্রস্তাবিত চিপে ক্লিক করুন (যেমন: <em>"📊 Key Metrics & Numbers"</em>)।</li>
+        <li>দেখান কিভাবে সিস্টেম ইন্টারনেটে না গিয়ে লোকাল ChromaDB মেমোরি থেকে তাৎক্ষণিক ফ্যাক্টভিত্তিক উত্তর দিচ্ছে।</li>
+      </ul>
+    </li>
+  </ol>
+
+  <!-- SECTION 7: SUMMARY & FUTURE WORK -->
+  <h2><span class="section-num">৭.</span> উপসংহার ও ভবিষ্যৎ পরিকল্পনা (Conclusion & Future Work)</h2>
+  <p>
+    <strong>EOSAI</strong> প্রজেক্টটি প্রমাণ করে যে কোনো প্রকার ক্লাউড নির্ভরতা বা পেইড সাবস্ক্রিপশন ছাড়াই সাধারণ পার্সোনাল কম্পিউটারে আধুনিক আর্টিফিশিয়াল ইন্টেলিজেন্স, এজেন্টিক ওয়ার্কফ্লো এবং আরএজি পাইপলাইন সফলভাবে পরিচালনা করা সম্ভব। 
+  </p>
+  <p><strong>ভবিষ্যৎ পরিকল্পনা:</strong></p>
+  <ul>
+    <li>অটোমেটিক ডাটা ভিজ্যুয়ালাইজেশন ও পাইচার্ট/বারচার্ট জেনারেশন সরাসরি স্লাইড ডেকে ইন্টিগ্রেট করা।</li>
+    <li>ভয়েস ইনপুট ও স্পিচ সিন্থেসিসের মাধ্যমে অডিও প্রেজেন্টার মোড যুক্ত করা।</li>
+    <li>মাল্টি-এজেন্ট কল্যাবোরেশন (একাধিক স্বশাসিত এজেন্ট পরস্পরের সাথে বিতর্ক করে ফ্যাক্ট চূড়ান্ত করবে)।</li>
+  </ul>
+
+  <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #cbd5e1; text-align: center; font-size: 9pt; color: #64748b;">
+    CSE 3202: Artificial Intelligence Laboratory Project • Prepared for Academic Defense & Presentation • 2026
+  </div>
+
+</body>
+</html>

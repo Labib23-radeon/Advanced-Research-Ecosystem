@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="stellarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="50%" stop-color="#4facfe" />
+      <stop offset="100%" stop-color="#9d4edd" />
+    </linearGradient>
+    <filter id="stellarGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Primary 4-pointed star -->
+  <path d="M 50 5 Q 50 45 90 50 Q 50 55 50 95 Q 50 55 10 50 Q 50 45 50 5 Z" 
+        fill="url(#stellarGrad)" 
+        filter="url(#stellarGlow)" />
+        
+  <!-- Secondary accent star top-right -->
+  <path d="M 82 12 Q 82 22 92 24 Q 82 26 82 36 Q 82 26 72 24 Q 82 22 82 12 Z" 
+        fill="#00f2fe" 
+        opacity="0.85" />
+        
+  <!-- Micro starlet bottom-left -->
+  <circle cx="24" cy="78" r="3.5" fill="#f72585" opacity="0.9" />
+</svg>
